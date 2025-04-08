@@ -7,6 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.replace('light-mode', 'dark-mode');
     }
     
+    // Check for saved language preference or use French as default
+    const savedLanguage = localStorage.getItem('language') || 'fr';
+    setLanguage(savedLanguage);
+    
     // Theme toggle functionality
     const themeToggle = document.querySelector('.theme-toggle');
     
@@ -19,6 +23,34 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('theme', 'light');
         }
     });
+    
+    // Language toggle functionality
+    const languageToggle = document.querySelector('.language-toggle');
+    
+    languageToggle.addEventListener('click', () => {
+        const currentLanguage = document.body.getAttribute('data-language');
+        const newLanguage = currentLanguage === 'en' ? 'fr' : 'en';
+        setLanguage(newLanguage);
+        localStorage.setItem('language', newLanguage);
+    });
+    
+    // Function to set language
+    function setLanguage(language) {
+        document.body.setAttribute('data-language', language);
+        
+        // Hide all language elements
+        document.querySelectorAll('.lang-en, .lang-fr').forEach(el => {
+            el.style.display = 'none';
+        });
+        
+        // Show only the selected language elements
+        document.querySelectorAll(`.lang-${language}`).forEach(el => {
+            el.style.display = 'inline';
+        });
+        
+        // Update HTML lang attribute
+        document.documentElement.lang = language;
+    }
     
     // Print/PDF export functionality
     const printButton = document.querySelector('.print-button');
